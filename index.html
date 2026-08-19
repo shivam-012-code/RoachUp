@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoachUp - Earn & Learn | College Student Part-Time Job Platform</title>
+  <meta name="description" content="RoachUp connects college and university students with flexible part-time gigs, internships, and micro-jobs. Earn money while gaining real-world skills.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <!-- Clean, Modern RoachUp Logo -->
+      <div class="brand-logo" onclick="app.showView('landing-view')">
+        <div class="logo-icon">
+          <i data-lucide="zap"></i>
+        </div>
+        <div class="brand-text">
+          Roach<span class="brand-up">Up</span>
+        </div>
+      </div>
+
+      <!-- Navbar Links with 'About' Page -->
+      <ul class="nav-links">
+        <li class="nav-link" onclick="app.showView('landing-view')">Home</li>
+        <li class="nav-link" onclick="app.showRoleModal()">Roles</li>
+        <li class="nav-link" onclick="app.navigateToGigs()">Explore Tasks</li>
+        <li class="nav-link" onclick="app.showView('college-view')">Colleges & Communities</li>
+        <li class="nav-link" onclick="app.showAdminLogin()">Admin</li>
+        <li class="nav-link" onclick="app.showView('about-view')">About</li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Guest View -->
+        <div id="nav-guest-actions" class="nav-actions">
+          <button class="btn btn-secondary btn-sm" onclick="app.showRoleModal()">Login</button>
+          <button class="btn btn-primary btn-sm" onclick="app.showView('student-register-view')">Join as Student</button>
+        </div>
+
+        <!-- Logged In User Session View -->
+        <div id="nav-user-actions" class="nav-actions" style="display: none;">
+          <div class="user-nav-badge" onclick="app.goToActiveDashboard()">
+            <div class="user-avatar-sm" id="user-avatar-text">S</div>
+            <div class="user-info-sm">
+              <span class="user-name-sm" id="user-display-name">Student Name</span>
+              <span class="user-role-sm" id="user-display-role">Student</span>
+            </div>
+          </div>
+          <!-- Logout with confirmation popup -->
+          <button class="btn btn-danger btn-sm" onclick="app.promptLogout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER FOR VIEWS -->
+  <main class="container">
+
+    <!-- 1. LANDING PAGE VIEW -->
+    <section id="landing-view" class="view-section active">
+      <div class="hero">
+        <div class="hero-badge">
+          <i data-lucide="sparkles"></i> #1 Place for Part-Time Works
+        </div>
+        <h1 class="hero-title">Work Flexible Tasks, <highlight>Earn Money</highlight> & Build Your Career</h1>
+        <p class="hero-desc">
+          RoachUp empowers students to pick up verified part-time jobs, campus tasks, and freelance gigs near their location.
+        </p>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="app.showView('student-register-view')">
+            Register as Student <i data-lucide="arrow-right"></i>
+          </button>
+          <button class="btn btn-indigo" onclick="app.showView('customer-register-view')">
+            Hire Students for Tasks <i data-lucide="briefcase"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Select Your Role Section -->
+      <div class="section-header">
+        <h2 class="section-title">Select Your Role to Get Started</h2>
+        <p class="section-subtitle">Whether you're a student looking to earn or an employer looking for verified talent</p>
+      </div>
+
+      <!-- Roles Grid (Admin card removed from body as requested) -->
+      <div class="roles-grid">
+        <!-- Student Role Card -->
+        <div class="glass-card role-card" onclick="app.showView('student-register-view')">
+          <div>
+            <div class="role-icon"><i data-lucide="graduation-cap"></i></div>
+            <h3 class="role-title">Students/Earners</h3>
+            <p class="role-desc">Register with Email OTP & ID verification to access flexible part-time tasks near your campus.</p>
+            <ul class="role-features">
+              <li><i data-lucide="check-circle"></i> Complete ₹299 instant registration</li>
+              <li><i data-lucide="check-circle"></i> Email OTP & Student ID verification</li>
+              <li><i data-lucide="check-circle"></i> Earn ₹300 - ₹2,000 per completed task</li>
+              <li><i data-lucide="check-circle"></i> Build student rating & verified profile</li>
+            </ul>
+          </div>
+          <button class="btn btn-primary btn-block">Students Portal <i data-lucide="arrow-right"></i></button>
+        </div>
+
+        <!-- Customer / Consumer Role Card -->
+        <div class="glass-card role-card indigo" onclick="app.showView('customer-register-view')">
+          <div>
+            <div class="role-icon"><i data-lucide="briefcase"></i></div>
+            <h3 class="role-title">Consumers</h3>
+            <p class="role-desc">Post local or remote tasks and hire enthusiastic, background-checked university talent.</p>
+            <ul class="role-features">
+              <li><i data-lucide="check-circle"></i> Free consumers sign-up</li>
+              <li><i data-lucide="check-circle"></i> Post micro-tasks, events & research tasks</li>
+              <li><i data-lucide="check-circle"></i> View student ratings, campus & location</li>
+              <li><i data-lucide="check-circle"></i> Secure escrow & task management</li>
+            </ul>
+          </div>
+          <button class="btn btn-indigo btn-block">Consumers Portal <i data-lucide="arrow-right"></i></button>
+        </div>
+
+        <!-- College Partner Card -->
+        <div class="glass-card role-card cyan" onclick="app.showView('college-view')">
+          <div>
+            <div class="role-icon"><i data-lucide="building"></i></div>
+            <h3 class="role-title">College & Communities</h3>
+            <p class="role-desc">Partner with institutions to connect verified students with trusted local opportunities.</p>
+            <ul class="role-features">
+              <li><i data-lucide="check-circle"></i> Aligned with their skills</li>
+              <li><i data-lucide="check-circle"></i> Institutional verification batching</li>
+              <li><i data-lucide="check-circle"></i> Easy way to connect</li>
+            </ul>
+          </div>
+          <button class="btn btn-secondary btn-block">College Partner communities <i data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Featured Tasks Feed -->
+      <div class="section-header" style="text-align: left; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <h2 class="section-title">Latest Student Micro-Tasks</h2>
+          <p class="section-subtitle">Verified part-time opportunities available right now</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="app.navigateToGigs()">View All Tasks</button>
+      </div>
+
+      <div class="gigs-grid" id="landing-gigs-container">
+        <!-- Dynamic Tasks Loaded via JavaScript -->
+      </div>
+
+      <!-- ⚡ Quick 30-40 Min Tasks Section -->
+      <div class="section-header" style="text-align: left; margin-top: 3.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <span class="badge-status" style="background: rgba(217, 119, 6, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); margin-bottom: 0.4rem; display: inline-block;">
+            <i data-lucide="zap"></i> FAST PAYOUT TASKS (30-40 MINS)
+          </span>
+          <h2 class="section-title">⚡ Quick 30–40 Minute Tasks</h2>
+          <p class="section-subtitle">Short-duration tasks taking 30–40 minutes for instant earnings</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="app.navigateToGigs()">View All Quick Tasks</button>
+      </div>
+
+      <div class="gigs-grid" id="landing-quick-tasks-container">
+        <!-- Dynamic Quick Tasks Loaded via JavaScript -->
+      </div>
+
+      <!-- Top Rated Students Showcase -->
+      <div class="section-header" style="margin-top: 4rem; text-align: left;">
+        <h2 class="section-title">Top Rated Student Earners</h2>
+        <p class="section-subtitle">Students building stellar ratings and earning on RoachUp</p>
+      </div>
+
+      <div class="gigs-grid" id="top-students-container">
+        <!-- Dynamic Top Students Loaded via JavaScript -->
+      </div>
+    </section>
+
+    <!-- 2. ABOUT US & FOUNDERS PAGE VIEW -->
+    <section id="about-view" class="view-section">
+      <div class="hero" style="padding-bottom: 2rem;">
+        <div class="hero-badge" style="background: rgba(0, 171, 85, 0.1); border-color: rgba(0, 171, 85, 0.3); color: var(--primary-emerald);">
+          <i data-lucide="users"></i> About RoachUp Team
+        </div>
+        <h1 class="hero-title">Empowering Students Across <highlight>India</highlight></h1>
+        <p class="hero-desc" id="about-platform-vision">
+          RoachUp was founded with a clear mission: to enable college and university students to achieve financial independence, build professional experience, and land flexible part-time tasks while studying.
+        </p>
+      </div>
+
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem; text-align: center; padding: 2.5rem;">
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-emerald), var(--accent-cyan)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 800;" id="about-founder-avatar">
+          R
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;" id="about-founder-name">Rishi Choudhary</h2>
+        <p style="color: var(--primary-emerald); font-weight: 700; margin-bottom: 1.2rem;" id="about-founder-role">Founder & Team Leader</p>
+
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;" id="about-founder-bio">
+          Rishi is a passionate student entrepreneur who recognized the challenge that students face in balancing academics with income generation. Under his leadership, RoachUp has grown faster into a trusted network connecting verified students with local and remote micro-tasks.
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; font-size: 0.9rem; color: var(--text-muted);">
+          <span><i data-lucide="mail"></i> Email: <strong id="about-founder-email">roachup@gmail.com</strong></span>
+          <span><i data-lucide="phone"></i> Helpline: <strong>1234567890</strong></span>
+        </div>
+      </div>
+
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem; text-align: center; padding: 2.5rem;">
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-emerald), var(--accent-cyan)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 800;" id="about-founder-avatar">
+          S
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;" id="about-founder-name">Supriya Singh</h2>
+        <p style="color: var(--primary-emerald); font-weight: 700; margin-bottom: 1.2rem;" id="about-founder-role">Business & Finance Lead</p>
+
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;" id="about-founder-bio">
+          Supriya is a passionate student entrepreneur who lead our business finance and management very well. She define business strategy and agiln financial goals with overall vision.
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; font-size: 0.9rem; color: var(--text-muted);">
+          <span><i data-lucide="mail"></i> Email: <strong id="about-founder-email">roachup@gmail.com</strong></span>
+          <span><i data-lucide="phone"></i> Helpline: <strong>1234567890</strong></span>
+        </div>
+      </div>
+
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem; text-align: center; padding: 2.5rem;">
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-emerald), var(--accent-cyan)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 800;" id="about-founder-avatar">
+          S
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;" id="about-founder-name">Shivam Kumar</h2>
+        <p style="color: var(--primary-emerald); font-weight: 700; margin-bottom: 1.2rem;" id="about-founder-role">Tech Lead</p>
+
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;" id="about-founder-bio">
+          Shivam is a passionate student entrepreneur who leads the tech part of the website, looking after the website development and maintenance. He is also a good competitive programmer and a web developer. 
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; font-size: 0.9rem; color: var(--text-muted);">
+          <span><i data-lucide="mail"></i> Email: <strong id="about-founder-email">roachup@gmail.com</strong></span>
+          <span><i data-lucide="phone"></i> Helpline: <strong>1234567890</strong></span>
+        </div>
+      </div>
+
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem; text-align: center; padding: 2.5rem;">
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-emerald), var(--accent-cyan)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 800;" id="about-founder-avatar">
+          S
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;" id="about-founder-name">Sanjana Shorff</h2>
+        <p style="color: var(--primary-emerald); font-weight: 700; margin-bottom: 1.2rem;" id="about-founder-role">Marketing & Outreach Lead</p>
+
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;" id="about-founder-bio">
+          Sanjana is a passionate student entrepreneur who is the marketing and outreach lead of our startup RoachUp. She is responsible for marketing and outreach activities of the company and she is also a good content writer and a social media manager.
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; font-size: 0.9rem; color: var(--text-muted);">
+          <span><i data-lucide="mail"></i> Email: <strong id="about-founder-email">roachup@gmail.com</strong></span>
+          <span><i data-lucide="phone"></i> Helpline: <strong>1234567890</strong></span>
+        </div>
+      </div>
+
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto 3rem; text-align: center; padding: 2.5rem;">
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-emerald), var(--accent-cyan)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 800;" id="about-founder-avatar">
+          S
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;" id="about-founder-name">Sushant Kumar</h2>
+        <p style="color: var(--primary-emerald); font-weight: 700; margin-bottom: 1.2rem;" id="about-founder-role">UI/UX Designer</p>
+
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;" id="about-founder-bio">
+          Sushant is a passionate student entrepreneur who is the ui/ux designer of our startup RoachUp. He is responsible for ui/ux design activities of the company and he is also a competitive programmer.
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; font-size: 0.9rem; color: var(--text-muted);">
+          <span><i data-lucide="mail"></i> Email: <strong id="about-founder-email">roachup@gmail.com</strong></span>
+          <span><i data-lucide="phone"></i> Helpline: <strong>1234567890</strong></span>
+        </div>
+      </div>
+
+      <div style="background: rgba(0, 171, 85, 0.05); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; max-width: 800px; margin: 0 auto; text-align: center;">
+        <h3 style="margin-bottom: 0.6rem;">Administrative Note</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          These founder and company details can be modified in real-time by the platform admin through the Admin Control Center.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. STUDENT REGISTRATION VIEW -->
+    <section id="student-register-view" class="view-section">
+      <div class="form-card glass-card">
+        <div class="form-header">
+          <h2>Student Account Registration</h2>
+          <p class="text-muted">Register your student account, complete verification, and pay ₹299 fee to unlock jobs</p>
+        </div>
+
+        <!-- Step Wizard Banner -->
+        <div class="wizard-steps">
+          <div class="step-item active" id="step-ind-1">
+            <div class="step-circle">1</div>
+            <div class="step-title">Details</div>
+          </div>
+          <div class="step-item" id="step-ind-2">
+            <div class="step-circle">2</div>
+            <div class="step-title">Email OTP</div>
+          </div>
+          <div class="step-item" id="step-ind-3">
+            <div class="step-circle">3</div>
+            <div class="step-title">ID Card</div>
+          </div>
+          <div class="step-item" id="step-ind-4">
+            <div class="step-circle">4</div>
+            <div class="step-title">₹299 Fee</div>
+          </div>
+        </div>
+
+        <!-- FORM STEP 1: Basic Information -->
+        <form id="student-reg-form" onsubmit="app.handleStudentRegStep1(event)">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="reg-student-name" class="form-control" placeholder="e.g. Rohan Sharma" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email Address (OTP will be sent here) *</label>
+              <input type="email" id="reg-student-email" class="form-control" placeholder="rohan@university.edu" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number *</label>
+              <input type="tel" id="reg-student-phone" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">College / University Name *</label>
+              <input type="text" id="reg-student-college" class="form-control" placeholder="e.g. Delhi University / IIT Delhi" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location / City *</label>
+              <input type="text" id="reg-student-location" class="form-control" placeholder="e.g. New Delhi, North Campus" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Create Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="reg-student-pass" class="form-control" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('reg-student-pass', this)" title="Show/Hide Password">
+                  <i data-lucide="eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="reg-student-cpass" class="form-control" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('reg-student-cpass', this)" title="Show/Hide Password">
+                  <i data-lucide="eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary btn-block">
+              Proceed to Email OTP Verification <i data-lucide="mail"></i>
+            </button>
+          </div>
+
+          <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
+            Already registered? <a href="#" onclick="app.showView('student-login-view')">Student Login</a>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4. STUDENT LOGIN VIEW -->
+    <section id="student-login-view" class="view-section">
+      <div class="form-card glass-card" style="max-width: 440px;">
+        <div class="form-header">
+          <h2>Student Portal Login</h2>
+          <p class="text-muted">Enter your registered email or phone and password</p>
+        </div>
+
+        <form id="student-login-form" onsubmit="app.handleStudentLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Email or Phone Number</label>
+            <input type="text" id="login-student-email" class="form-control" placeholder="student@university.edu" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="login-student-pass" class="form-control" placeholder="••••••••" required>
+              <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('login-student-pass', this)" title="Show/Hide Password">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.88rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted);">
+              <input type="checkbox" checked> Save login session
+            </label>
+            <!-- Forgot Password Feature -->
+            <a href="#" onclick="app.openModal('forgot-pass-modal')">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Login to Dashboard <i data-lucide="log-in"></i></button>
+
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); text-align: center;">
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem;">Quick Demo Login:</p>
+            <button type="button" class="btn btn-secondary btn-sm btn-block" onclick="app.demoStudentLogin()">
+              🚀 Log In as Sample Verified Student (Rohan Sharma)
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. STUDENT DASHBOARD VIEW -->
+    <section id="student-dashboard-view" class="view-section">
+      <!-- Student Banner -->
+      <div class="glass-card" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 1.2rem;">
+          <div class="user-avatar-sm" style="width: 60px; height: 60px; font-size: 1.5rem;" id="dash-student-avatar">S</div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+              <h2 id="dash-student-name" style="font-size: 1.5rem;">Student Name</h2>
+              <span class="badge-status verified" id="dash-student-status-badge">
+                <i data-lucide="check-circle"></i> Verified Student
+              </span>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 0.3rem; font-size: 0.88rem; color: var(--text-muted);">
+              <span class="badge-location" id="dash-student-location"><i data-lucide="map-pin"></i> Delhi University</span>
+              <span class="rating-stars" id="dash-student-rating"><i data-lucide="star"></i> 4.9 (12 reviews)</span>
+              <span style="color: var(--primary-emerald); font-weight: 700;" id="dash-student-college">IIT Delhi</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; align-items: center;">
+          <div style="text-align: right;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Available Earnings Balance</div>
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-emerald); font-family: var(--font-display);" id="dash-student-wallet">
+              ₹4,250
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="app.showWithdrawModal()">Withdraw Funds</button>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid Layout -->
+      <div class="dashboard-grid">
+        <!-- Sidebar Navigation -->
+        <div class="glass-card sidebar-nav">
+          <div class="sidebar-link active" onclick="app.switchStudentTab('gigs', this)">
+            <i data-lucide="briefcase"></i> Browse Available Tasks
+          </div>
+          <div class="sidebar-link" onclick="app.switchStudentTab('quick-tasks', this)">
+            <i data-lucide="zap"></i> ⚡ Quick 30-Min Tasks
+          </div>
+          <div class="sidebar-link" onclick="app.switchStudentTab('my-jobs', this)">
+            <i data-lucide="check-square"></i> My Applications & Jobs
+          </div>
+          <div class="sidebar-link" onclick="app.switchStudentTab('wallet', this)">
+            <i data-lucide="wallet"></i> Wallet & ₹299 Receipt
+          </div>
+          <div class="sidebar-link" onclick="app.switchStudentTab('profile', this)">
+            <i data-lucide="user"></i> My Profile & Rating
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div>
+          <!-- Tab 1: Available Tasks -->
+          <div id="student-tab-gigs" class="tab-content active">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+              <input type="text" id="gig-search-input" class="form-control" placeholder="Search tasks by title, skill, or campus location..." style="flex-grow: 1;" onkeyup="app.filterStudentGigs()">
+              <select id="gig-category-filter" class="form-control" style="width: 220px;" onchange="app.filterStudentGigs()">
+                <option value="all">All Categories</option>
+                <option value="Quick Task">⚡ Quick Tasks (30-40 Mins)</option>
+                <option value="Event Staff">Event Staff</option>
+                <option value="Campus Ambassador">Campus Ambassador</option>
+                <option value="Content & Marketing">Content & Marketing</option>
+                <option value="Data Entry">Data Entry</option>
+                <option value="Tutoring">Tutoring</option>
+              </select>
+            </div>
+
+            <div class="gigs-grid" id="student-gigs-feed">
+              <!-- Dynamically populated tasks -->
+            </div>
+          </div>
+
+          <!-- Tab: Quick 30-40 Min Tasks -->
+          <div id="student-tab-quick-tasks" class="tab-content" style="display: none;">
+            <div style="margin-bottom: 1.5rem;">
+              <span class="badge-status" style="background: rgba(217, 119, 6, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); margin-bottom: 0.4rem; display: inline-block;">
+                <i data-lucide="zap"></i> FAST PAYOUT MICRO-TASKS
+              </span>
+              <h3>⚡ Quick 30–40 Minute Tasks</h3>
+              <p class="text-muted" style="font-size: 0.9rem;">Short micro-tasks designed to take 30-40 minutes for fast money</p>
+            </div>
+
+            <div class="gigs-grid" id="student-quick-tasks-feed">
+              <!-- Dynamically populated quick tasks -->
+            </div>
+          </div>
+
+          <!-- Tab 2: My Jobs & Applications -->
+          <div id="student-tab-my-jobs" class="tab-content" style="display: none;">
+            <h3 style="margin-bottom: 1.2rem;">Applied Tasks & Work History</h3>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Task Title</th>
+                    <th>Employer / Location</th>
+                    <th>Pay Rate</th>
+                    <th>Application Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="student-applied-jobs-list">
+                  <!-- Dynamically populated applied jobs -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab 3: Wallet & Registration Receipt -->
+          <div id="student-tab-wallet" class="tab-content" style="display: none;">
+            <div class="glass-card" style="margin-bottom: 1.5rem;">
+              <h3>Registration & Membership Ledger</h3>
+              <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">Your student account is active with verified RoachUp Membership.</p>
+              
+              <div class="payment-summary-card">
+                <div class="payment-row">
+                  <span>Membership Status:</span>
+                  <span class="badge-status approved">PAID & ACTIVE</span>
+                </div>
+                <div class="payment-row">
+                  <span>Registration Fee Paid:</span>
+                  <span style="font-weight: 700;">₹299.00</span>
+                </div>
+                <div class="payment-row">
+                  <span>Transaction Reference ID:</span>
+                  <span id="student-receipt-txnid" style="font-family: monospace;">TXN-ROACH-89201</span>
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="app.reprintStudentReceipt()">
+                <i data-lucide="download"></i> Download / Print Registration Fee Receipt
+              </button>
+            </div>
+          </div>
+
+          <!-- Tab 4: My Profile -->
+          <div id="student-tab-profile" class="tab-content" style="display: none;">
+            <div class="glass-card">
+              <h3>Student Profile Details</h3>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">Keep your info updated to get higher rating job offers</p>
+              
+              <form id="student-profile-edit-form" onsubmit="app.updateStudentProfile(event)">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="prof-student-name" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Location / City</label>
+                    <input type="text" id="prof-student-location" class="form-control">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">College / University</label>
+                    <input type="text" id="prof-student-college" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" id="prof-student-phone" class="form-control" readonly style="opacity: 0.7;">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Save Profile Changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CUSTOMER / CONSUMER REGISTRATION & LOGIN VIEWS -->
+    <section id="customer-register-view" class="view-section">
+      <div class="form-card glass-card">
+        <div class="form-header">
+          <h2>Consumer & Employer Registration</h2>
+          <p class="text-muted">Post part-time tasks and hire background-checked college students</p>
+        </div>
+
+        <form id="customer-reg-form" onsubmit="app.handleCustomerReg(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name / Business Owner *</label>
+              <input type="text" id="reg-cust-name" class="form-control" placeholder="e.g. Vikram Mehta" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company / Brand Name (Optional)</label>
+              <input type="text" id="reg-cust-company" class="form-control" placeholder="e.g. Apex Events / Individual">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Work Email *</label>
+              <input type="email" id="reg-cust-email" class="form-control" placeholder="vikram@company.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number *</label>
+              <input type="tel" id="reg-cust-phone" class="form-control" placeholder="9876500000" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location / Primary Campus Area *</label>
+            <input type="text" id="reg-cust-location" class="form-control" placeholder="e.g. South Delhi / Bangalore Tech Park" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="reg-cust-pass" class="form-control" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('reg-cust-pass', this)" title="Show/Hide Password">
+                  <i data-lucide="eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="reg-cust-cpass" class="form-control" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('reg-cust-cpass', this)" title="Show/Hide Password">
+                  <i data-lucide="eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-indigo btn-block" style="margin-top: 1rem;">
+            Create Consumer Account <i data-lucide="check"></i>
+          </button>
+
+          <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
+            Already have an account? <a href="#" onclick="app.showView('customer-login-view')">Consumer Login</a>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section id="customer-login-view" class="view-section">
+      <div class="form-card glass-card" style="max-width: 440px;">
+        <div class="form-header">
+          <h2>Consumer Login</h2>
+          <p class="text-muted">Access your dashboard to manage posted tasks and hire students</p>
+        </div>
+
+        <form id="customer-login-form" onsubmit="app.handleCustomerLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Email or Phone</label>
+            <input type="text" id="login-cust-email" class="form-control" placeholder="vikram@company.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="login-cust-pass" class="form-control" placeholder="••••••••" required>
+              <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('login-cust-pass', this)" title="Show/Hide Password">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.88rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted);">
+              <input type="checkbox" checked> Save login session
+            </label>
+            <!-- Forgot Password Feature -->
+            <a href="#" onclick="app.openModal('forgot-pass-modal')">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-indigo btn-block">Consumer Login <i data-lucide="log-in"></i></button>
+
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); text-align: center;">
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem;">Quick Demo Login:</p>
+            <button type="button" class="btn btn-secondary btn-sm btn-block" onclick="app.demoCustomerLogin()">
+              💼 Log In as Sample Consumer (Vikram Mehta - Apex Events)
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CUSTOMER DASHBOARD VIEW -->
+    <section id="customer-dashboard-view" class="view-section">
+      <!-- Customer Banner -->
+      <div class="glass-card" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 1.2rem;">
+          <div class="user-avatar-sm" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));" id="dash-cust-avatar">C</div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+              <h2 id="dash-cust-name" style="font-size: 1.5rem;">Customer / Company Name</h2>
+              <span class="badge-status verified"><i data-lucide="shield-check"></i> Verified Employer</span>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 0.3rem; font-size: 0.88rem; color: var(--text-muted);">
+              <span class="badge-location" id="dash-cust-location"><i data-lucide="map-pin"></i> South Delhi</span>
+              <span class="rating-stars" id="dash-cust-rating"><i data-lucide="star"></i> 4.8 Employer Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <button class="btn btn-indigo" onclick="app.openPostGigModal()">
+            <i data-lucide="plus-circle"></i> Post Standard Task
+          </button>
+          <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent-amber), #b45309); border: none;" onclick="app.openPostQuickTaskModal()">
+            <i data-lucide="zap"></i> ⚡ Post 30-Min Quick Task
+          </button>
+        </div>
+      </div>
+
+      <!-- Posted Tasks & Applicants Tracking -->
+      <div class="section-header" style="text-align: left;">
+        <h3>My Posted Micro-Tasks & Applicants Tracking</h3>
+        <p class="section-subtitle">Review applications from verified students and assign work</p>
+      </div>
+
+      <div class="table-container" style="margin-bottom: 3rem;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Task Title & Category</th>
+              <th>Location</th>
+              <th>Pay Rate</th>
+              <th>Applicants</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customer-posted-gigs-list">
+            <!-- Dynamic posted tasks loaded via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Applicant Details Drawer -->
+      <div id="applicant-details-box" class="glass-card" style="display: none; margin-top: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+          <h3 id="applicant-box-title">Applicants for Task</h3>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('applicant-details-box').style.display='none'">Close</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>College / University</th>
+                <th>Location</th>
+                <th>Rating</th>
+                <th>ID Verification Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="applicant-rows-container">
+              <!-- Dynamically populated applicants -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. COLLEGE & COMMUNITY PARTNER PORTAL VIEW -->
+    <section id="college-view" class="view-section">
+      <div class="hero" style="padding-bottom: 2rem;">
+        <div class="hero-badge" style="background: rgba(2, 132, 199, 0.1); border-color: rgba(2, 132, 199, 0.3); color: var(--accent-cyan);">
+          <i data-lucide="building"></i> Institutional & Community Hub
+        </div>
+        <h1 class="hero-title">Empower Your Students with <highlight>Verified Tasks</highlight></h1>
+        <p class="hero-desc">Partner colleges and campus ambassadors track student participation, verify student badges, and host exclusive campus recruitment drives.</p>
+      </div>
+
+      <!-- Partner Colleges Grid -->
+      <div class="roles-grid" style="margin-top: 2rem;">
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>Delhi University Hub</h3>
+            <span class="badge-status approved">480 Active Earners</span>
+          </div>
+          <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">Location: North & South Campus, Delhi</p>
+          <div style="font-size: 0.85rem; color: var(--primary-emerald); font-weight: 700;">Total Student Earnings: ₹6.4 Lakhs</div>
+        </div>
+
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>IIT Bombay Chapter</h3>
+            <span class="badge-status approved">310 Active Earners</span>
+          </div>
+          <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">Location: Powai, Mumbai</p>
+          <div style="font-size: 0.85rem; color: var(--primary-emerald); font-weight: 700;">Total Student Earnings: ₹4.8 Lakhs</div>
+        </div>
+
+        <div class="glass-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>Christ University Hub</h3>
+            <span class="badge-status approved">290 Active Earners</span>
+          </div>
+          <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">Location: Hosur Road, Bangalore</p>
+          <div style="font-size: 0.85rem; color: var(--primary-emerald); font-weight: 700;">Total Student Earnings: ₹3.9 Lakhs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. ADMIN LOGIN & CONTROL CENTER VIEW -->
+    <section id="admin-login-view" class="view-section">
+      <div class="form-card glass-card" style="max-width: 420px;">
+        <div class="form-header">
+          <div style="font-size: 2.5rem; color: var(--accent-amber); margin-bottom: 0.5rem;"><i data-lucide="shield-check"></i></div>
+          <h2>Admin Login Portal</h2>
+          <p class="text-muted">Total platform access & management authority</p>
+        </div>
+
+        <form id="admin-login-form" onsubmit="app.handleAdminLogin(event)">
+          <div class="form-group">
+            <label class="form-label">Admin Email</label>
+            <input type="email" id="admin-email" class="form-control" placeholder="Enter Admin Email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Admin Security Key / Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="admin-pass" class="form-control" placeholder="Enter Admin Password" required>
+              <button type="button" class="password-toggle-btn" onclick="app.togglePasswordVisibility('admin-pass', this)" title="Show/Hide Password">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, var(--accent-amber), #b45309); color: #ffffff;">
+            Access Admin Control Center <i data-lucide="unlock"></i>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin-dashboard-view" class="view-section">
+      <!-- Admin Header -->
+      <div class="glass-card" style="margin-bottom: 2rem; border-color: var(--accent-amber);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="badge-status" style="background: rgba(217, 119, 6, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber);">
+              <i data-lucide="shield-alert"></i> PLATFORM SUPER ADMIN ACTIVE
+            </span>
+            <h2 style="font-size: 1.8rem; margin-top: 0.5rem;">RoachUp Command & Tracking Center</h2>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="app.promptLogout()">Exit Admin Mode</button>
+        </div>
+      </div>
+
+      <!-- Financial & Platform Metrics -->
+      <div class="stats-grid" style="margin-bottom: 2.5rem;">
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--primary-emerald);">
+          <div class="stat-number emerald" id="admin-revenue-count">₹1,794</div>
+          <div class="stat-label">Total Revenue from ₹299 Fees</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-indigo);">
+          <div class="stat-number indigo" id="admin-students-count">6</div>
+          <div class="stat-label">Total Registered Students</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-amber);">
+          <div class="stat-number amber" id="admin-customers-count">4</div>
+          <div class="stat-label">Total Customers</div>
+        </div>
+        <div class="glass-card stat-card" style="border-left: 4px solid var(--accent-cyan);">
+          <div class="stat-number cyan" id="admin-pending-id-count">12</div>
+          <div class="stat-label">Pending ID Approvals</div>
+        </div>
+      </div>
+
+      <!-- ADMIN TABBED CONTROL (Now includes Manage About & Founder Details) -->
+      <div class="glass-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm active" id="admin-tab-btn-students" onclick="app.switchAdminTab('students')">
+            <i data-lucide="users"></i> Student Roster & ID Approvals
+          </button>
+          <button class="btn btn-secondary btn-sm" id="admin-tab-btn-customers" onclick="app.switchAdminTab('customers')">
+            <i data-lucide="briefcase"></i> Employer & Job Tracking
+          </button>
+          <button class="btn btn-secondary btn-sm" id="admin-tab-btn-revenue" onclick="app.switchAdminTab('revenue')">
+            <i data-lucide="credit-card"></i> ₹299 Payment Logs
+          </button>
+          <button class="btn btn-secondary btn-sm" id="admin-tab-btn-founder" onclick="app.switchAdminTab('founder')">
+            <i data-lucide="user-check"></i> Manage About & Founders
+          </button>
+        </div>
+
+        <!-- Student Management Table -->
+        <div id="admin-view-students">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>Registered Students Master List</h3>
+            <input type="text" class="form-control" placeholder="Search student by name, phone, college, or location..." style="width: 320px;" onkeyup="app.filterAdminStudents(this.value)">
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Contact Info</th>
+                  <th>College & Location</th>
+                  <th>Rating</th>
+                  <th>₹299 Fee Status</th>
+                  <th>ID Verification Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-students-table-body">
+                <!-- Dynamically populated students -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Customer & Job Management Table -->
+        <div id="admin-view-customers" style="display: none;">
+          <h3>Posted Tasks & Employer Monitor</h3>
+          <div class="table-container" style="margin-top: 1rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Task Title</th>
+                  <th>Employer Name</th>
+                  <th>Location</th>
+                  <th>Pay Rate</th>
+                  <th>Applicants</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-jobs-table-body">
+                <!-- Dynamically populated jobs -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Revenue & Payments Ledger -->
+        <div id="admin-view-revenue" style="display: none;">
+          <h3>₹299 Registration Fee Transactions</h3>
+          <div class="table-container" style="margin-top: 1rem;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Txn ID</th>
+                  <th>Student Name</th>
+                  <th>Phone / Email</th>
+                  <th>Amount</th>
+                  <th>Payment Method</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="admin-revenue-table-body">
+                <!-- Dynamically populated revenue ledger -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Manage About & Founder Details (ADMIN EDIT FORM) -->
+        <div id="admin-view-founder" style="display: none;">
+          <h3>Manage Founder & About Us Details</h3>
+          <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Update the founder information displayed on the public About page</p>
+
+          <form id="admin-founder-edit-form" onsubmit="app.saveFounderInfo(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Founder Full Name *</label>
+                <input type="text" id="edit-founder-name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Designation / Role *</label>
+                <input type="text" id="edit-founder-role" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Founder Contact Email *</label>
+              <input type="email" id="edit-founder-email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Founder Biography *</label>
+              <textarea id="edit-founder-bio" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Platform Vision Statement *</label>
+              <textarea id="edit-founder-vision" class="form-control" rows="2" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Founder Info & Update About Page <i data-lucide="save"></i></button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- 1. EMAIL OTP VERIFICATION MODAL -->
+  <div class="modal-overlay" id="otp-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="app.closeModal('otp-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="font-size: 2.5rem; color: var(--primary-emerald);"><i data-lucide="mail"></i></div>
+        <h3>Verify Email Address</h3>
+        <p class="text-muted" style="font-size: 0.9rem;">
+          We sent a 6-digit verification code to <strong id="otp-target-email">student@university.edu</strong>
+        </p>
+      </div>
+
+      <div style="background: rgba(0, 171, 85, 0.1); padding: 0.6rem; border-radius: var(--radius-sm); text-align: center; font-size: 0.88rem; color: var(--primary-emerald); font-weight: 600; margin-bottom: 1rem;">
+        💡 Demo Verification Code: <strong>849201</strong> (Or enter any 6 digits)
+      </div>
+
+      <div class="otp-input-container">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 1)">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 2)">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 3)">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 4)">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 5)">
+        <input type="text" maxlength="1" class="otp-box" oninput="app.focusNextOtp(this, 6)">
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="app.verifyOtpSubmit()">
+        Verify Email OTP & Continue <i data-lucide="check-circle"></i>
+      </button>
+
+      <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+        Resend OTP in <span id="otp-timer">29</span>s
+      </p>
+    </div>
+  </div>
+
+  <!-- 2. LOGOUT CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="logout-confirm-modal">
+    <div class="modal-box" style="max-width: 420px; text-align: center;">
+      <div style="font-size: 2.5rem; color: var(--accent-amber); margin-bottom: 0.8rem;">
+        <i data-lucide="log-out"></i>
+      </div>
+      <h3>Confirm Logout</h3>
+      <p class="text-muted" style="font-size: 0.92rem; margin-bottom: 1.5rem;">
+        Are you sure you want to log out of your RoachUp account?
+      </p>
+
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-secondary btn-block" onclick="app.closeModal('logout-confirm-modal')">Cancel</button>
+        <button class="btn btn-danger btn-block" onclick="app.confirmLogout()">Confirm Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. FORGOT PASSWORD MODAL -->
+  <div class="modal-overlay" id="forgot-pass-modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <button class="modal-close" onclick="app.closeModal('forgot-pass-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="font-size: 2.2rem; color: var(--accent-indigo);"><i data-lucide="key-round"></i></div>
+        <h3>Forgot Password?</h3>
+        <p class="text-muted" style="font-size: 0.88rem;">Enter your registered email address below to receive a password reset link.</p>
+      </div>
+
+      <form id="forgot-pass-form" onsubmit="app.handleForgotPasswordSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Registered Email Address *</label>
+          <input type="email" id="forgot-user-email" class="form-control" placeholder="user@university.edu" required>
+        </div>
+
+        <button type="submit" class="btn btn-indigo btn-block" style="margin-top: 1rem;">
+          Send Reset Link <i data-lucide="send"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. CONSUMER FEEDBACK MODAL -->
+  <div class="modal-overlay" id="feedback-modal">
+    <div class="modal-box" style="max-width: 500px;">
+      <button class="modal-close" onclick="app.closeModal('feedback-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="font-size: 2.2rem; color: var(--primary-emerald);"><i data-lucide="message-square"></i></div>
+        <h3>Consumer Feedback Form</h3>
+        <p class="text-muted" style="font-size: 0.88rem;">Share your experience hiring students on RoachUp</p>
+      </div>
+
+      <form id="consumer-feedback-form" onsubmit="app.handleConsumerFeedbackSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Consumer / Employer Name *</label>
+          <input type="text" id="feedback-cust-name" class="form-control" placeholder="e.g. Vikram Mehta" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Consumer Email Address *</label>
+          <input type="email" id="feedback-cust-email" class="form-control" placeholder="vikram@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Experience Rating</label>
+          <select id="feedback-cust-rating" class="form-control">
+            <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Exceptional Experience</option>
+            <option value="4">⭐⭐⭐⭐ 4 Stars - Very Good</option>
+            <option value="3">⭐⭐⭐ 3 Stars - Average</option>
+            <option value="2">⭐⭐ 2 Stars - Below Expectation</option>
+            <option value="1">⭐ 1 Star - Needs Improvement</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Your Experience Comments & Feedback *</label>
+          <textarea id="feedback-cust-text" class="form-control" rows="3" placeholder="Tell us about the quality of work, student punctuality, and platform experience..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Submit Consumer Feedback <i data-lucide="send"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. STUDENT ID CARD UPLOAD MODAL -->
+  <div class="modal-overlay" id="id-upload-modal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="app.closeModal('id-upload-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="font-size: 2.2rem; color: var(--accent-indigo);"><i data-lucide="file-check"></i></div>
+        <h3>Upload Student ID Card</h3>
+        <p class="text-muted" style="font-size: 0.88rem;">Upload your valid University / College ID card for verification</p>
+      </div>
+
+      <div class="file-upload-box" onclick="document.getElementById('id-card-file-input').click()">
+        <div class="file-upload-icon"><i data-lucide="upload-cloud"></i></div>
+        <p style="font-weight: 600;">Click or Drag & Drop Student ID Card</p>
+        <p class="text-muted" style="font-size: 0.8rem; margin-top: 0.4rem;">PNG, JPG, or PDF (Max 5MB)</p>
+        <input type="file" id="id-card-file-input" accept="image/*" style="display: none;" onchange="app.handleIdFileSelected(event)">
+      </div>
+
+      <div id="id-file-preview-container" style="display: none; text-align: center; margin-top: 1rem;">
+        <img id="id-preview-img-tag" class="id-preview-img" src="" alt="ID Preview">
+        <p style="font-size: 0.85rem; color: var(--primary-emerald); font-weight: 600; margin-top: 0.4rem;">✔ ID Card Uploaded & Ready</p>
+      </div>
+
+      <button class="btn btn-indigo btn-block" style="margin-top: 1.5rem;" onclick="app.proceedToPaymentStep()">
+        Proceed to ₹299 Registration Fee <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. ₹299 PAYMENT GATEWAY MODAL -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <button class="modal-close" onclick="app.closeModal('payment-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.2rem;">
+        <div style="font-size: 2rem; color: var(--primary-emerald);"><i data-lucide="credit-card"></i></div>
+        <h3>RoachUp Student Registration Fee</h3>
+        <p class="text-muted" style="font-size: 0.88rem;">One-time platform activation fee for student account verification</p>
+      </div>
+
+      <div class="payment-summary-card">
+        <div class="payment-row">
+          <span>Student Account Verification</span>
+          <span>₹253.39</span>
+        </div>
+        <div class="payment-row">
+          <span>GST / Platform Processing (18%)</span>
+          <span>₹45.61</span>
+        </div>
+        <div class="payment-row total">
+          <span>Total Amount Payable</span>
+          <span>₹299.00</span>
+        </div>
+      </div>
+
+      <div style="font-size: 0.88rem; font-weight: 600; margin-bottom: 0.5rem;">Select Payment Method</div>
+      <div class="payment-methods">
+        <div class="pay-method-btn active" onclick="app.selectPayMethod('upi', this)">UPI / QR</div>
+        <div class="pay-method-btn" onclick="app.selectPayMethod('card', this)">Debit / Card</div>
+        <div class="pay-method-btn" onclick="app.selectPayMethod('netbanking', this)">NetBanking</div>
+      </div>
+
+      <!-- UPI QR Code View -->
+      <div id="pay-view-upi" style="text-align: center; margin-bottom: 1.5rem;">
+        <div style="background: #ffffff; padding: 1rem; display: inline-block; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <svg width="140" height="140" viewBox="0 0 100 100" style="display: block;">
+            <rect width="100" height="100" fill="#fff"/>
+            <path d="M10 10h30v30h-30z M15 15h20v20h-20z M60 10h30v30h-30z M65 15h20v20h-20z M10 60h30v30h-30z M15 65h20v20h-20z M45 15h10v10h-10z M45 45h35v10h-35z M75 60h15v30h-15z M45 75h20v15h-20z" fill="#0f172a"/>
+          </svg>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.6rem;">Scan with GPay, PhonePe, Paytm or BHIM UPI</p>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="app.process299Payment()">
+        Simulate Pay ₹299 & Complete Registration <i data-lucide="lock"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 7. PRINTABLE DIGITAL RECEIPT MODAL -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="modal-box" style="max-width: 480px;">
+      <button class="modal-close" onclick="app.closeModal('receipt-modal')">&times;</button>
+      
+      <div class="receipt-box" id="printable-receipt-area">
+        <div class="receipt-header">
+          <div class="receipt-brand">⚡ RoachUp</div>
+          <div style="font-size: 0.8rem; color: #475569;">Campus Student Work Platform</div>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.2rem;">Official Fee Payment Receipt</div>
+        </div>
+
+        <div class="receipt-item">
+          <span>Receipt No:</span>
+          <strong id="rec-number">RCUP-2026-9812</strong>
+        </div>
+        <div class="receipt-item">
+          <span>Date & Time:</span>
+          <span id="rec-date">19 Aug 2026, 23:30</span>
+        </div>
+        <div class="receipt-item">
+          <span>Student Name:</span>
+          <strong id="rec-student-name">Rohan Sharma</strong>
+        </div>
+        <div class="receipt-item">
+          <span>Phone / Email:</span>
+          <span id="rec-student-contact">9876543210</span>
+        </div>
+        <div class="receipt-item">
+          <span>College / Location:</span>
+          <span id="rec-student-location">Delhi University</span>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-item">
+          <span>Student Verification Fee:</span>
+          <span>₹253.39</span>
+        </div>
+        <div class="receipt-item">
+          <span>GST (18%):</span>
+          <span>₹45.61</span>
+        </div>
+        <div class="receipt-item" style="font-size: 1.1rem; font-weight: 800; margin-top: 0.5rem; color: var(--primary-emerald);">
+          <span>TOTAL PAID:</span>
+          <span>₹299.00</span>
+        </div>
+
+        <div class="receipt-divider"></div>
+        
+        <div style="text-align: center; font-size: 0.75rem; color: #64748b;">
+          STATUS: PAID & VERIFIED<br>
+          Txn Ref: <span id="rec-txnid">TXN-892019482</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-secondary btn-block" onclick="window.print()">
+          <i data-lucide="printer"></i> Print Receipt
+        </button>
+        <button class="btn btn-primary btn-block" onclick="app.finishRegistrationAndEnterDashboard()">
+          Go to Student Dashboard <i data-lucide="arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. POST NEW TASK MODAL -->
+  <div class="modal-overlay" id="post-gig-modal">
+    <div class="modal-box" style="max-width: 580px;">
+      <button class="modal-close" onclick="app.closeModal('post-gig-modal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <h2>Post a Part-Time Micro-Task</h2>
+        <p class="text-muted" style="font-size: 0.88rem;">Find enthusiastic verified students near your campus or remotely</p>
+      </div>
+
+      <form id="post-gig-form" onsubmit="app.submitNewGig(event)">
+        <div class="form-group">
+          <label class="form-label">Task Title *</label>
+          <input type="text" id="post-gig-title" class="form-control" placeholder="e.g. Event Manager / Campus Promoter / Data Entry Specialist" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select id="post-gig-category" class="form-control" required>
+              <option value="Quick Task">⚡ Quick Task (30-40 Mins)</option>
+              <option value="Event Staff">Event Staff</option>
+              <option value="Campus Ambassador">Campus Ambassador</option>
+              <option value="Content & Marketing">Content & Marketing</option>
+              <option value="Data Entry">Data Entry</option>
+              <option value="Tutoring">Tutoring</option>
+              <option value="Research & Survey">Research & Survey</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pay Payout (₹) *</label>
+            <input type="number" id="post-gig-pay" class="form-control" placeholder="e.g. 800" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Location / Campus *</label>
+            <input type="text" id="post-gig-location" class="form-control" placeholder="e.g. North Campus, Delhi or Remote" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Hours</label>
+            <input type="text" id="post-gig-hours" class="form-control" placeholder="e.g. 4 Hours / Weekend" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Task Description & Requirements</label>
+          <textarea id="post-gig-desc" class="form-control" rows="3" placeholder="Describe the task details, timing, and skills required..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-indigo btn-block">Publish Micro-Task <i data-lucide="send"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. ADMIN VIEW ID CARD MODAL -->
+  <div class="modal-overlay" id="admin-view-id-modal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close" onclick="app.closeModal('admin-view-id-modal')">&times;</button>
+      <h3>Student ID Verification Check</h3>
+      <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 1rem;" id="admin-id-modal-student-name">Student: Rohan Sharma</p>
+      
+      <div style="background: #f8fafc; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+        <img id="admin-id-modal-img" src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=60" style="max-width: 100%; height: auto; border-radius: 8px;" alt="ID Card">
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-primary btn-block" onclick="app.adminApproveId()">
+          <i data-lucide="check"></i> Approve Student ID
+        </button>
+        <button class="btn btn-danger btn-block" onclick="app.adminRejectId()">
+          <i data-lucide="x"></i> Reject ID Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. RATE USER MODAL -->
+  <div class="modal-overlay" id="rating-modal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close" onclick="app.closeModal('rating-modal')">&times;</button>
+      <h3 id="rating-modal-title">Rate Performance</h3>
+      <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 1rem;" id="rating-modal-target">Rate student Rohan Sharma for Event Manager Gig</p>
+
+      <div style="display: flex; justify-content: center; gap: 0.6rem; font-size: 2rem; color: var(--accent-amber); cursor: pointer; margin: 1.5rem 0;" id="rating-star-container">
+        <span onclick="app.setRatingStars(1)">★</span>
+        <span onclick="app.setRatingStars(2)">★</span>
+        <span onclick="app.setRatingStars(3)">★</span>
+        <span onclick="app.setRatingStars(4)">★</span>
+        <span onclick="app.setRatingStars(5)">★</span>
+      </div>
+
+      <div class="form-group">
+        <textarea id="rating-comment" class="form-control" rows="3" placeholder="Write a short review comment..."></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="app.submitRating()">Submit Rating & Feedback</button>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER WITH HELPLINE CONTACTS -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo" style="margin-bottom: 1rem;">
+            <div class="logo-icon">
+              <i data-lucide="zap"></i>
+            </div>
+            <div class="brand-text">
+              Roach<span class="brand-up">Up</span>
+            </div>
+          </div>
+          <p class="text-muted" style="font-size: 0.9rem; max-width: 320px; margin-bottom: 1rem;">
+            The ultimate student part-time job & micro-task network. Gain real work experience, earn money, and grow your career.
+          </p>
+          <div style="font-size: 0.88rem; color: var(--text-main);">
+            <div><i data-lucide="phone" style="width: 14px; height: 14px; color: var(--primary-emerald);"></i> Helpline: <strong>1234567890</strong></div>
+            <div><i data-lucide="mail" style="width: 14px; height: 14px; color: var(--primary-emerald);"></i> Support Email: <strong>shivam012@gmail.com</strong></div>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>For Students</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="app.showView('student-register-view')">Register as Student</a></li>
+            <li><a href="#" onclick="app.navigateToGigs()">Browse Micro-Tasks</a></li>
+            <li><a href="#" onclick="app.showView('student-login-view')">Student Login</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>For Consumers</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="app.showView('customer-register-view')">Register Consumer</a></li>
+            <li><a href="#" onclick="app.showView('customer-login-view')">Consumer Login</a></li>
+            <li><a href="#" onclick="app.openModal('feedback-modal')">Submit Feedback</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform & Company</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="app.showView('about-view')">About Founders</a></li>
+            <li><a href="#" onclick="app.showAdminLogin()">Admin Portal Access</a></li>
+            <li><a href="#" onclick="app.showView('college-view')">College Communities</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 RoachUp Platform Inc. All rights reserved.</div>
+        <div>Helpline: 1234567890 | Email: shivam012@gmail.com</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
